@@ -15,7 +15,7 @@ export default function TabLayout() {
           }}>
       <Tabs.Screen name='index' options={{  headerShown: false }}/>
       <Tabs.Screen name='authType' options={{  headerShown: false }}/>
-      <Tabs.Screen name='authorization' options={{  headerShown: false }}/>
+      <Tabs.Screen name='login' options={{  headerShown: false }}/>
       <Tabs.Screen name='registration' options={{  headerShown: false }}/>
       <Tabs.Screen name='accountSetup' options={{headerShown: false}}/>
     </Tabs>

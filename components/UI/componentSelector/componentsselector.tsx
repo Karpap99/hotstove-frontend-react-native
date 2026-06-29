@@ -2,7 +2,7 @@ import { Table, UIinner } from '@/types/postGeneration';
 import { Image } from 'expo-image';
 import React, { ReactElement } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { PostImageInput, PostListInput, PostTableInput, PostTextInput } from '..';
+import { PostImageInput, PostListInput, PostTableInput, PostTextInput } from '../../';
 
 
 

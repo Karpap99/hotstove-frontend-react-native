@@ -17,7 +17,7 @@ export const useRoutes = (): Routes => {
   const router = useRouter();
   const {user} = useAuth()
 
-  const navigateAuthorization = () => router.push("/(app)/(auth)/authorization");
+  const navigateAuthorization = () => router.push("/(app)/(auth)/login");
   const navigateRegistration = () => router.push("/(app)/(auth)/registration");
   const navigateStart = () => router.push("/(app)/(auth)");
   const navigateAuthorizationType = () => router.push("/(app)/(auth)/authType");

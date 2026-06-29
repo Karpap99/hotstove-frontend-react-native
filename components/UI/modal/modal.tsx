@@ -1,5 +1,5 @@
-import { PropsWithChildren, useEffect, useState, type ComponentProps } from 'react';
-import { StyleSheet ,TouchableOpacity, View, Animated, ViewStyle, useAnimatedValue, Text, ScrollView } from 'react-native';
+import { PropsWithChildren, useEffect } from 'react';
+import { StyleSheet ,TouchableOpacity, View, Animated, ViewStyle, Text } from 'react-native';
 import { Image } from 'expo-image';
 import { useAuth } from '@/context/authcontext';
 import { useApp } from '@/context/appcontext';
@@ -32,12 +32,12 @@ const SlideInView: React.FC<SlideInViewProps> = props => {
 };
 
 export const Modal = () => {
-    const {user, userData, logout} = useAuth()
+    const {user, profile, logout} = useAuth()
     const {switchModal} = useApp()
     const ReturnPFP = () => {
-        if(userData)
-            if(userData.profile_picture)
-                return userData.profile_picture
+        if(profile)
+            if(profile.profile_picture)
+                return profile.profile_picture
         return require("@/assets/images/default_pfp.svg")
     }
 
@@ -53,7 +53,7 @@ export const Modal = () => {
             <SlideInView style={styles.modal_body}>
                 <View style={[styles.button_wrapper, { padding: 40}]}>
                     <Image style={styles.pfp} source={ReturnPFP()}/>
-                    <Text style={styles.button_text}>@{user.nickname}</Text>
+                    <Text style={styles.button_text}>@{user.nickname ? user.nickname : "placeholder"}</Text>
                 </View>
                 <TouchableOpacity style={styles.button_wrapper} onPress={ToChannel}>
                     <Text style={styles.button_text}>Мій канал</Text>

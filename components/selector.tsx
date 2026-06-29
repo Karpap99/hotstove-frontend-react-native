@@ -1,21 +1,30 @@
-import { apiPrivate } from '@/common/api/api';
-import { useCallback, useEffect, useState } from 'react';
-import { Text, StyleSheet ,View, TextInput, TouchableOpacity } from 'react-native';
+import { apiPrivate } from "@/services/api/api";
+import { useCallback, useEffect, useState } from "react";
+import {
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
+} from "react-native";
 
-type Props = { text: string, setValue: (x: TagType[]) => void, values?: Object[]};
+type Props = {
+  text: string;
+  setValue: (x: TagType[]) => void;
+  values?: Object[];
+};
 
 type TagType = {
-  id: string,
-  content: string
-}
+  id: string;
+  content: string;
+};
 
-
-export const Selector = ({ text, setValue}: Props) => {
-  const [visible, setVisible] = useState<boolean>(false)
-  const [selected, setSelected] = useState<TagType[]>([])
-  const [input, setInput] = useState<string>('')
-  const [Tags, setTags] = useState<TagType[]>([])
-  const [query, setQuery] = useState<string>('')
+export const Selector = ({ text, setValue }: Props) => {
+  const [visible, setVisible] = useState<boolean>(false);
+  const [selected, setSelected] = useState<TagType[]>([]);
+  const [input, setInput] = useState<string>("");
+  const [Tags, setTags] = useState<TagType[]>([]);
+  const [query, setQuery] = useState<string>("");
 
   const load_tags = useCallback(async () => {
     try {
@@ -26,10 +35,14 @@ export const Selector = ({ text, setValue}: Props) => {
     }
   }, [input]);
 
-
   useEffect(() => {
-    const contents = input.split(',').map(s => s.trim()).filter(Boolean);
-    const updatedSelected = selected.filter(tag => contents.includes(tag.content));
+    const contents = input
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+    const updatedSelected = selected.filter((tag) =>
+      contents.includes(tag.content),
+    );
 
     const lastPart = contents[contents.length - 1] || "";
     setQuery(lastPart);
@@ -48,107 +61,124 @@ export const Selector = ({ text, setValue}: Props) => {
     return () => clearTimeout(delayDebounce);
   }, [input, visible]);
 
-  const Tag = useCallback(({ item }:{item: TagType}) => {
-    return(
-      <TouchableOpacity style={styles.item} onPress={()=>{setSelected(prev => prev.some(t => t.id === item.id) ? prev : [...prev, item]); }}>
+  const Tag = useCallback(({ item }: { item: TagType }) => {
+    return (
+      <TouchableOpacity
+        style={styles.item}
+        onPress={() => {
+          setSelected((prev) =>
+            prev.some((t) => t.id === item.id) ? prev : [...prev, item],
+          );
+        }}
+      >
         <Text style={styles.text}>{item.content}</Text>
       </TouchableOpacity>
-    )
-    
-  }, [])
+    );
+  }, []);
 
   const InputChange = (e: string) => {
-      setInput(e)
-  }
-  
-  useEffect(()=>{console.log(visible)},[visible])
+    setInput(e);
+  };
 
-  useEffect(()=>{
-    setInput(selected.map(tag => tag.content).join(', '))
-    setValue(selected)
-  },[selected])
+  useEffect(() => {
+    console.log(visible);
+  }, [visible]);
 
-  useEffect(()=>{
-    const inpt= (input.split(","))
-    setQuery(inpt[inpt.length - 1].trimStart())
-  },[input])
+  useEffect(() => {
+    setInput(selected.map((tag) => tag.content).join(", "));
+    setValue(selected);
+  }, [selected]);
+
+  useEffect(() => {
+    const inpt = input.split(",");
+    setQuery(inpt[inpt.length - 1].trimStart());
+  }, [input]);
 
   return (
     <View style={styles.shadow}>
-        <Text style={[styles.text, styles.header_text]}>{text}</Text>
-        <TouchableOpacity style={styles.selector} onPress={()=>{
-            setVisible(!visible) 
-          }}>
-          {visible ?
-            <TextInput placeholder={text} style={styles.input} value={input} onChangeText={InputChange} onBlur={()=>setVisible(false)}></TextInput>
-            :
-            <Text style={styles.text}>{selected.map(tag => tag.content).join(', ') || 'Оберіть теги'}</Text>
-          } 
-        </TouchableOpacity>
-        {
-          visible &&
-          <View style={styles.list}>
-            {
-              Tags.map((tg)=><Tag key={tg.id} item={tg}/>)
-            }
-          </View>
-        }
-    </View> 
+      <Text style={[styles.text, styles.header_text]}>{text}</Text>
+      <TouchableOpacity
+        style={styles.selector}
+        onPress={() => {
+          setVisible(!visible);
+        }}
+      >
+        {visible ? (
+          <TextInput
+            placeholder={text}
+            style={styles.input}
+            value={input}
+            onChangeText={InputChange}
+            onBlur={() => setVisible(false)}
+          ></TextInput>
+        ) : (
+          <Text style={styles.text}>
+            {selected.map((tag) => tag.content).join(", ") || "Оберіть теги"}
+          </Text>
+        )}
+      </TouchableOpacity>
+      {visible && (
+        <View style={styles.list}>
+          {Tags.map((tg) => (
+            <Tag key={tg.id} item={tg} />
+          ))}
+        </View>
+      )}
+    </View>
   );
-}
-
+};
 
 const styles = StyleSheet.create({
   selector: {
     height: 60,
     width: 350,
-    backgroundColor: 'white',
-    borderColor:'black',
+    backgroundColor: "white",
+    borderColor: "black",
     borderWidth: 0.5,
-    borderRadius: 5 ,
-    display: 'flex',
-    justifyContent: 'center',
+    borderRadius: 5,
+    display: "flex",
+    justifyContent: "center",
     fontSize: 16,
-    fontFamily:"ComfortaaRegular",
+    fontFamily: "ComfortaaRegular",
   },
-  item:{
+  item: {
     borderBottomColor: "gray",
     borderBottomWidth: 0.3,
     height: 40,
     padding: 5,
   },
   list: {
-    position: 'absolute',
-    backgroundColor:"white",
+    position: "absolute",
+    backgroundColor: "white",
     width: 350,
     maxHeight: 120,
-    borderColor:'black',
+    borderColor: "black",
     borderWidth: 0.5,
     bottom: -120,
-    zIndex:2,
+    zIndex: 2,
   },
   shadow: {
-    position: 'relative'
+    position: "relative",
   },
-   input: {
+  input: {
     height: 60,
     width: 350,
     fontSize: 14,
     lineHeight: 18,
-    fontFamily:"ComfortaaRegular",
-    backgroundColor:'white',
-    borderColor:'black',
+    fontFamily: "ComfortaaRegular",
+    backgroundColor: "white",
+    borderColor: "black",
     borderWidth: 0.5,
-    borderRadius: 5 ,
-    padding: 5
+    borderRadius: 5,
+    padding: 5,
   },
-  text:{
+  text: {
     paddingBottom: 5,
     paddingLeft: 5,
     fontSize: 14,
-    fontFamily:"ComfortaaRegular"
+    fontFamily: "ComfortaaRegular",
   },
-  header_text:{
-    padding: 0
-  }
+  header_text: {
+    padding: 0,
+  },
 });

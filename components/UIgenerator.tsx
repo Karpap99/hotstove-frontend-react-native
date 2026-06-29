@@ -1,7 +1,7 @@
 import { element, List, Post, PostData, Table, UIinner } from '@/types/postGeneration';
 import React, { ReactElement, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { ComponentSelector } from './componentSelector/componentsselector';
+import { ComponentSelector } from './UI/componentSelector/componentsselector';
 import { JsonToEditable } from './jsonToEditable/jsonToEditable';
 import { elementToJson } from './ReactToJson';
 
@@ -28,7 +28,7 @@ export const UIgenerator =  ({triger, setMarking, json}:Props) => {
     if(triger === true){
       getMarking()
     }
-  },[triger])
+  }, [triger])
 
   useEffect(() => {
   if (json) {

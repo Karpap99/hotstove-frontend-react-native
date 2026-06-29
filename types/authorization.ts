@@ -19,16 +19,16 @@ export type RegistrationData = {
   nickname: string, 
   email: string,
   password: string,
-  password2: string
+  passwordConfirm: string
 }
 
 export type Response = {
-  result: User,
+  user: User,
   access: string,
   refresh: string
 }
 
-export type AuthorizationData = {
+export type LoginDTO = {
   email: string,
   password: string,
 }
